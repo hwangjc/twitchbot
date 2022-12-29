@@ -2,7 +2,7 @@ from twitchio.ext import commands
 
 from errors import UserCmdExistsError, UserCmdDNEError
 from secret import TOKEN, CLIENT_ID, CHANNEL
-from user_commands import UserCommand, UserCommandManager
+from cmds.user_commands import UserCommand, UserCommandManager
 from utils import UserUtils
 
 
