@@ -4,15 +4,7 @@ import shutil
 from threading import Thread, Lock
 from typing import List
 
-
-class UserCmdAlreadyExistsEx(Exception):
-    """Exception raised user commands already exist."""
-    pass
-
-
-class UserCmdDoesNotExistEx(Exception):
-    """Exception a user commands does not exist."""
-    pass
+from errors import UserCmdExistsError, UserCmdDNEError
 
 
 class UserCommand:
@@ -131,7 +123,7 @@ class UserCommandManager:
         # See if this command already exists
         if command.name in self.user_commands:
             self.uc_lock.release()
-            raise UserCmdAlreadyExistsEx
+            raise UserCmdExistsError
 
         # Save new command to file
         UserCommandFileUtils.encode_to_file(
@@ -154,7 +146,7 @@ class UserCommandManager:
         # Make sure command exists
         if command_name not in self.user_commands:
             self.uc_lock.release()
-            raise UserCmdDoesNotExistEx
+            raise UserCmdDNEError
 
         # Remove from UCM memory
         del self.user_commands[command_name]
@@ -176,4 +168,32 @@ class UserCommandManager:
             self.bot.remove_command(command_name[1:])
         except commands.errors.CommandNotFound as e:
             # This shouldn't happen, and if it does, something is very wrong
-            raise UserCmdDoesNotExistEx("Something went horribly wrong")
+            raise UserCmdDNEError("Something went horribly wrong")
+
+    def edit_user_command(self, command_name: str, new_content: str) -> None:
+        self.uc_lock.acquire()
+        if command_name not in self.user_commands:
+            self.uc_lock.release()
+            raise UserCmdDNEError
+
+        # Edit in memory
+        edited_command = UserCommand(command_name, new_content)
+        self.user_commands[command_name] = edited_command
+
+        # Rewrite new persistent file
+        t = Thread(
+            target=UserCommandFileUtils.encode_all_to_file,
+            args=(list(self.user_commands.values()), self.file_name, self.file_lock)
+        )
+        t.start()
+        t.join()
+        self.uc_lock.release()
+
+        # Remove old command and add new one
+        try:
+            self.bot.remove_command(command_name[1:])
+        except commands.errors.CommandNotFound as e:
+            raise UserCmdDNEError("Something went horribly wrong")
+        self.bot.add_command(
+            UserCommandUtils.user_command_to_twitch_command(edited_command)
+        )
