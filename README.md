@@ -19,3 +19,11 @@ Usage:
 ```
 Example:
 - `!rmcommand !test`
+
+### Editing a command
+Usage:
+```
+!editcommand ![COMMAND NAME] [NEW CONTENT]
+```
+Example:
+- `!editcommand !test this is a new test`
