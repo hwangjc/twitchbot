@@ -9,10 +9,17 @@ from cmds.generic_queue_commands import GenericQueueCommands
 def main():
     # Initialize the persistent User Commands File
     cwd = os.path.abspath(os.path.dirname(__file__))
+
+    persistent_rel_path = "./persistent/"
+    persistent_abs_path = os.path.abspath(os.path.join(cwd, persistent_rel_path))
+    if not os.path.isdir(persistent_abs_path):
+        print(f"Making {persistent_abs_path}")
+        os.mkdir(persistent_abs_path)
+
     ucf_rel_path = "./persistent/usercommands"
     ucf_abs_path = os.path.abspath(os.path.join(cwd, ucf_rel_path))
     if not os.path.isfile(ucf_abs_path):
-        print("User Commands File does not exist; creating new file")
+        print(f"Making {ucf_abs_path}")
         open(ucf_abs_path, "w").close()
 
     bot = Bot(user_commands_file=ucf_abs_path)
