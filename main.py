@@ -2,7 +2,7 @@
 
 from bot import Bot
 from cmds.default_commands import DefaultCommands
-from cmds.queue_commands import QueueCommands
+from cmds.generic_queue_commands import GenericQueueCommands
 
 
 def main():
@@ -10,7 +10,7 @@ def main():
     
     # init cogs / commands
     bot.add_cog(DefaultCommands(bot))
-    bot.add_cog(QueueCommands(bot))
+    bot.add_cog(GenericQueueCommands(bot))
     bot.init_user_commands()
 
     bot.run()

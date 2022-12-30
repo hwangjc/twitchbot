@@ -2,17 +2,22 @@ from twitchio.ext import commands
 
 from emotes import GlobalEmotes
 from errors import UserNotFoundError, UserChannelNotFoundError
-from utils import BotActionUtils, UserUtils
+from utils import BotActionUtils, CommandUtils, UserUtils
 
 
 class DefaultCommands(commands.Cog):
+    """
+    Standard Twitch commands that exist for most bots.
+
+    Commands:
+        - shoutout | so
+    """
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.command(name="shoutout", aliases=["so"])
+    @CommandUtils.mod_only_command
     async def shoutout(self, ctx: commands.Context, target_user_name: str):
-        if not await UserUtils.is_mod_author(ctx):
-            return
         # Remove @ username prefix if present
         if target_user_name[0] == "@":
             target_user_name = target_user_name[1:] 

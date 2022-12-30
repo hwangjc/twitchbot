@@ -23,3 +23,11 @@ class UserCmdDNEError(CustomTwitchError):
     pass
 
 
+class QueueItemNotUniqueError(CustomTwitchError):
+    """Exception raised when adding non-unique item to a unique queue."""
+    pass
+
+
+class QueueItemDNEError(CustomTwitchError):
+    """Exception raised when a queue item does not exist."""
+    pass

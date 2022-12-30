@@ -1,9 +1,10 @@
 from twitchio.ext import commands
+from twitchio import Message
 
 from errors import UserCmdExistsError, UserCmdDNEError
 from secret import TOKEN, CLIENT_ID, CHANNEL
 from cmds.user_commands import UserCommand, UserCommandManager
-from utils import UserUtils
+from utils import CommandUtils, UserUtils
 
 
 class Bot(commands.Bot):
@@ -27,14 +28,13 @@ class Bot(commands.Bot):
         self.ucm.init_user_commands()
 
     @commands.command(name="addcommand")
+    @CommandUtils.mod_only_command
     async def addcommand(
         self, 
         ctx: commands.Context, 
         new_cmd_name: str, 
         *args
     ):
-        if not await UserUtils.is_mod_author(ctx):
-            return
         # Save new command
         new_cmd = UserCommand(new_cmd_name, " ".join(args))
         try:
@@ -44,9 +44,8 @@ class Bot(commands.Bot):
             await ctx.send(f"Command: {new_cmd_name} already exists")
 
     @commands.command(name="rmcommand")
+    @CommandUtils.mod_only_command
     async def rmcommand(self, ctx: commands.Context, sad_cmd_name: str):
-        if not await UserUtils.is_mod_author(ctx):
-            return
         # Remove command
         try:
             self.ucm.rm_user_command(sad_cmd_name)
@@ -55,14 +54,13 @@ class Bot(commands.Bot):
             await ctx.send(f"Command: {sad_cmd_name} does not exist")
 
     @commands.command(name="editcommand")
+    @CommandUtils.mod_only_command
     async def editcommand(
         self, 
         ctx: commands.Context,
         cmd_name: str,
         *args
     ):
-        if not await UserUtils.is_mod_author(ctx):
-            return
         # Edit command
         try:
             self.ucm.edit_user_command(cmd_name, " ".join(args))

@@ -1,3 +1,5 @@
+from typing import Callable
+
 from twitchio.ext import commands
 from twitchio import ChannelInfo, User
 
@@ -23,12 +25,6 @@ class UserUtils:
             raise UserChannelNotFoundError
         return channel_infos[0]
 
-    @staticmethod    
-    async def is_mod_author(ctx: commands.Context) -> bool:
-        if not ctx.author.is_mod:
-            await ctx.reply("lol not a mod")
-        return ctx.author.is_mod
-
 
 class BotActionUtils:
     @staticmethod
@@ -46,4 +42,15 @@ class BotActionUtils:
             moderator_id=bot.user_id,
             message=message
         )
+
+
+class CommandUtils:
+    @staticmethod
+    def mod_only_command(func: Callable) -> Callable:
+        async def decorator(self, ctx: commands.Context, *args, **kwargs):
+            if not ctx.author.is_mod:
+                await ctx.reply("lol not a mod")
+            else:
+                await func(self, ctx, *args, **kwargs)
+        return decorator
 

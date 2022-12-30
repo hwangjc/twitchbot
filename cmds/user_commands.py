@@ -1,8 +1,8 @@
-from twitchio.ext import commands
-
 import shutil
 from threading import Thread, Lock
 from typing import List
+
+from twitchio.ext import commands
 
 from errors import UserCmdExistsError, UserCmdDNEError
 
