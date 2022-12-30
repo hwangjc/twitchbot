@@ -8,7 +8,7 @@ from utils import CommandUtils, UserUtils
 
 
 class Bot(commands.Bot):
-    def __init__(self):
+    def __init__(self, user_commands_file: str):
         super().__init__(
             token=TOKEN, 
             client_secret=CLIENT_ID, 
@@ -16,7 +16,7 @@ class Bot(commands.Bot):
             initial_channels=[CHANNEL]
         )
         self.broadcaster_name = CHANNEL
-        self.user_commands_file = "persistent/usercommands"
+        self.user_commands_file = user_commands_file
         self.ucm = UserCommandManager(
             bot=self, persistent_file_name=self.user_commands_file
         )
