@@ -3,8 +3,19 @@
 This is a user facing guide on how to interact with this twitch bot.
 
 - [Command Management](#command-management)
+  - [Adding a new command](#adding-a-new-command)
+  - [Removing a command](#removing-a-command)
+  - [Editing a command](#editing-a-command)
 - [Queue Commands](#queue-commands)
+  - [Opening the queue](#opening-the-queue)
+  - [Closing the queue](#closing-the-queue)
+  - [Clearing the queue](#clearing-the-queue)
+  - [Get next user in the queue](#get-next-user-in-the-queue)
+  - [Joining the queue](#joining-the-queue)
+  - [Leaving the queue](#leaving-the-queue)
+  - [View users in the queue](#view-users-in-the-queue)
 - [Generic Commands](#generic-commands)
+  - [Shoutout](#shoutout)
 
 
 ## Command Management
@@ -71,8 +82,18 @@ Usage:
 ```
 !clear
 ```
+### Get next user in the queue
+> :warning: mod-only command
+
+Display the next user in the queue and subsequently remove them from the queue. If the user joined with a custom message, the custom message will also 
+be displayed.
+
+Usage:
+```
+!next
+```
 ### Joining the queue
-Join the queue with an optional message.
+Join the queue with an optional message. If you join with an optional message, the message will be displayed when it is your turn in the queue.
 
 Usage:
 ```
@@ -82,4 +103,35 @@ Examples:
 - `!join`: add yourself to the queue with no message
 - `!join this is my custom message`: add yourself to the queue with a message
 
+### Leaving the queue
+Usage:
+```
+!leave
+```
+### View users in the queue
+List all users currently in the queue, as well as their position in the queue.
+
+Usage:
+```
+!queue
+```
+
+
 ## Generic Commands
+Some generic commands that usually exist on most Twitch bots.
+
+### Shoutout
+> :warning: mod-only command
+
+Shoutout a valid user by sending an announcment to the chat. The announcement message will contain both the target user's Twitch channel link 
+as well as which game they were last seen playing on Twitch (if applicable).
+
+Usage:
+```
+!shoutout TARGET_USER
+!so TARGET_USER
+```
+Examples:
+- `!shoutout @divinesenatorkelly`
+- `!so @divinesenatorkelly`
+- `!so divinesenatorkelly`
