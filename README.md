@@ -26,6 +26,15 @@ Usage:
 Example:
 - `!rmcommand !test`
 
+### Editing a command
+> :warning: Mod-only command
+Usage:
+```
+!editcommand ![COMMAND NAME] [NEW CONTENT]
+```
+Example:
+- `!editcommand !test this is a new test`
+
 ## Queue Commands
 Here we have a set of commands to interact with a 
 
